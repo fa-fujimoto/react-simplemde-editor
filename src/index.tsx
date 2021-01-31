@@ -1,29 +1,39 @@
 import * as React from "react";
 import * as SimpleMDE from "easymde";
-import { KeyMap, DOMEvent, Editor } from "codemirror";
+import { KeyMap, DOMEvent, EditorChange } from "codemirror";
 
 const noop = () => {};
 let _id = 0;
 
 const generateId = () => `simplemde-editor-${++_id}`;
 
-type CodemirrorEvents =
-  | "change"
-  | "changes"
-  | "beforeChange"
-  | "cursorActivity"
-  | "beforeSelectionChange"
-  | "viewportChange"
-  | "gutterClick"
-  | "focus"
-  | "blur"
-  | "scroll"
-  | "update"
-  | "renderLine";
-
 type SimpleMdeToCodemirror = {
-  [E in CodemirrorEvents | DOMEvent]?: Editor["on"]
-};
+  change?: (instance: CodeMirror.Editor, changeObj: CodeMirror.EditorChangeLinkedList) => void,
+  changes?: (instance: CodeMirror.Editor, changes: CodeMirror.EditorChangeLinkedList[]) => void,
+  beforeChange?: (instance: CodeMirror.Editor, changeObj: CodeMirror.EditorChangeCancellable) => void,
+  cursorActivity?: (instance: CodeMirror.Editor) => void,
+  keyHandled?: (instance: CodeMirror.Editor, name: string, event: KeyboardEvent) => void,
+  inputRead?: (instance: CodeMirror.Editor, changeObj: EditorChange) => void,
+  electricInput?: (instance: CodeMirror.Editor, line: number) => void,
+  beforeSelectionChange?: (instance: CodeMirror.Editor, selection: { head: CodeMirror.Position; anchor: CodeMirror.Position; }) => void,
+  viewportChange?: (instance: CodeMirror.Editor, from: number, to: number) => void,
+  swapDoc?: (instance: CodeMirror.Editor, oldDoc: CodeMirror.Doc) => void,
+  gutterClick?: (instance: CodeMirror.Editor, line: number, gutter: string, clickEvent: MouseEvent) => void,
+  gutterContextMenu?: (instance: CodeMirror.Editor, line: number, gutter: string, contextMenu: MouseEvent) => void,
+  focus?: (instance: CodeMirror.Editor, event: FocusEvent) => void,
+  blur?: (instance: CodeMirror.Editor, event: FocusEvent) => void,
+  scroll?: (instance: CodeMirror.Editor) => void,
+  refresh?: (instance: CodeMirror.Editor) => void,
+  optionChange?: (instance: CodeMirror.Editor, option: string) => void,
+  scrollCursorIntoView?: (instance: CodeMirror.Editor, event: Event) => void,
+  update?: (instance: CodeMirror.Editor) => void,
+  renderLine?: (instance: CodeMirror.Editor, line: CodeMirror.LineHandle, element: HTMLElement) => void,
+  overwriteToggle?: (instance: CodeMirror.Editor, overwrite: boolean) => void,
+}
+
+// type SimpleMdeToCodemirrorGlobal = {
+//   [key in keyof GlobalEventHandlersEventMap]?: (instance: CodeMirror.Editor, event: GlobalEventHandlersEventMap[key]) => void
+// }
 
 export interface SimpleMDEEditorProps {
   id?: string;

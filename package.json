@@ -43,7 +43,7 @@
   },
   "scripts": {
     "prebuild:lib": "tsc",
-    "build:lib": "NODE_ENV=production babel src --out-dir lib  --source-maps --extensions \".js\",\".jsx\",\".ts\",\".tsx\"",
+    "build:lib": "set NODE_ENV=production&&babel src --out-dir lib  --source-maps --extensions \".js\",\".jsx\",\".ts\",\".tsx\"",
     "prepare": "yarn build:lib",
     "demo": "cd demo && yarn install && yarn start"
   },
